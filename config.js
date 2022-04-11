@@ -6,9 +6,6 @@ const dbConfig = {
   host: process.env.HOST,
   port: process.env.PORTDB,
   database: process.env.DATABASENAME,
-  ssl: {
-    rejectUnauthorized: false,
-  },
 };
 
 module.exports = dbConfig;
