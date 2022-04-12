@@ -58,9 +58,10 @@ router.post("/login", async (req, res) => {
     // console.log(foundUser);
     if (foundUser) {
       let submittedPass = user.password;
-      let storedPass = foundUser.password;
+      let storedPass = foundUser.pass;
 
       // const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
+
       if (submittedPass === storedPass) {
         let user = foundUser.user;
         var token = jwt.sign({ user }, "greenwaveauthapiforonlineexams");
