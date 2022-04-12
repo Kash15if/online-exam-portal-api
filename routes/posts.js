@@ -2,57 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 let jwt = require("jsonwebtoken"); //import jwt
-//importing db-pool for query
-const pool = require("../models/dbCon");
+const pool = require("../models/dbCon"); //importing db-pool for query
 
-router.get("/abc", async (req, res) => {
-  //   let token = req.headers["x-access-token"];
-  const jwttoken = req.headers["x-access-token"];
-  //   const TokenArray = jwttoken.split(" ");
-  //   const token = TokenArray[1];
-
-  if (!jwttoken)
-    return res
-      .status(401)
-      .send({ auth: false, message: "Authentication required." });
-
-  const TokenArray = jwttoken.split(" ");
-  const token = TokenArray[1];
-
-  try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
-
-    const users = jwt.decode(token);
-    res.send(users);
-  } catch {
-    return res
-      .status(500)
-      .send({ auth: false, message: "Failed to authenticate token." });
-  }
-});
-
-// router.post("/updateanswer", async (req, res) => {
-//   const jwttoken = req.headers["x-access-token"];
-
-//   const TokenArray = jwttoken.split(" ");
-//   const token = TokenArray[1];
-
-//   console.log(token);
-//   const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
-
-//   console.log(token);
-//   const users = jwt.decode(token);
-
-//   console.log(users);
-
-//   const data = req.body;
-//   const answers = data.answers;
-//   console.log(answers);
-//   const user = users.user;
-
-//   res.send(users);
-// });
-
+//update answer api
 router.post("/updateanswer", async (req, res) => {
   const jwttoken = req.headers["x-access-token"];
 
@@ -95,6 +47,7 @@ router.post("/updateanswer", async (req, res) => {
   }
 });
 
+//update timer api
 router.post("/updatetimer", async (req, res) => {
   const jwttoken = req.headers["x-access-token"];
 

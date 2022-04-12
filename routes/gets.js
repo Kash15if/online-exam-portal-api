@@ -35,6 +35,7 @@ router.get("/answers", async (req, res) => {
   }
 });
 
+//get api for timeleft
 router.get("/timeleft", async (req, res) => {
   const jwttoken = req.headers["x-access-token"];
 
@@ -65,10 +66,7 @@ router.get("/timeleft", async (req, res) => {
 
 //testing jwt
 router.get("/abc", async (req, res) => {
-  //   let token = req.headers["x-access-token"];
   const jwttoken = req.headers["x-access-token"];
-  //   const TokenArray = jwttoken.split(" ");
-  //   const token = TokenArray[1];
 
   if (!jwttoken)
     return res
