@@ -18,12 +18,14 @@ const cors = require("cors");
 const corsOptions = {
   origin: "*",
 
+  credentials: true,
+
   methods: ["GET", "POST"],
 
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type", "Access-Control-Allow-Headers"],
 };
 
-app.use(cors(corsOptions));
+app.use(cors({ origin: "*" }));
 
 const AllGetROutes = require("./routes/gets");
 const AllPostRoutes = require("./routes/posts");
@@ -32,4 +34,4 @@ app.use("/get", AllGetROutes);
 app.use("/post", AllPostRoutes);
 app.use("/auth", AuthRoutes);
 
-app.listen(3000);
+app.listen(5000);

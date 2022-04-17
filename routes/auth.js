@@ -48,10 +48,11 @@ const pool = require("../models/dbcon");
 
 router.post("/login", async (req, res) => {
   let user = req.body.user;
+
   try {
     let dbData = await pool.query(
-      'SELECT "user", pass FROM public.users where "user" = $1;',
-      [user.id]
+      'SELECT "user", pass,totaltime FROM public.users where "user" = $1;',
+      [user.user]
     );
     let foundUser = dbData.rows[0];
 
@@ -67,8 +68,14 @@ router.post("/login", async (req, res) => {
         var token = jwt.sign({ user }, "greenwaveauthapiforonlineexams");
 
         res.status(200);
-        res.send({ auth: true, token: token });
+        res.send({
+          auth: true,
+          token: token,
+          user: foundUser.user,
+          totaltime: foundUser.totaltime,
+        });
       } else {
+        res.status(404);
         res.send("Wrong Password, Type correct password and login again");
       }
     } else {
