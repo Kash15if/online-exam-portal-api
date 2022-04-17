@@ -127,56 +127,6 @@ router.get("/abc", async (req, res) => {
   }
 });
 
-//Check answers and return result
-router.get("/getresult", async (req, res) => {
-  const jwttoken = req.headers["x-access-token"];
-
-  if (!jwttoken)
-    return res
-      .status(401)
-      .send({ auth: false, message: "Authentication required." });
-
-  const TokenArray = jwttoken.split(" ");
-  const token = TokenArray[1];
-
-  try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
-
-    const users = jwt.decode(token);
-
-    const topic = req.body.topic;
-
-    const _userAnswers = await pool.query(
-      'SELECT "user", answers FROM public.answers where "user" = $1;',
-      [users.user]
-    );
-
-    const _actualAnswers = await pool.query(
-      'SELECT  answer FROM public."Questions" where qtopic = $1 order by qno;',
-      [topic]
-    );
-
-    const actualAnswerArray = Object.values(_userAnswers.rows);
-
-    const tempAnswersUsers = _userAnswers.rows[0].answers;
-    const usersAnswerArray = [...tempAnswersUsers];
-
-    const marks = 0;
-
-    usersAnswerArray.forEach((element, index) => {
-      if (element.trim() === actualAnswerArray[index].trim()) {
-        marks++;
-      }
-    });
-
-    res.status(200);
-    res.send({ marks: marks, user: users.user });
-  } catch {
-    return res
-      .status(500)
-      .send({ auth: false, message: "Failed to authenticate token." });
-  }
-});
 //code for checking authentication
 // const jwttoken = req.headers["x-access-token"];
 

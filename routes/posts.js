@@ -32,6 +32,8 @@ router.post("/updateanswer", async (req, res) => {
     // VALUES ($1, $2, $3,$4,$5, $6) RETURNING *',
     //   [name, certificate, question, req.body.choices, answers, email, classe],
     // );
+    // ['A', 'A', 'C', 'D','D', 'A', 'C', 'C','D', 'D' ]
+
     const out = await pool.query(
       'update public.answers  set "answers" =  $1::text[], "time" = Now() where "user" = $2',
       [answers, user]
@@ -75,6 +77,62 @@ router.post("/updatetimer", async (req, res) => {
 
     res.status = 200;
     res.send({ result: "data updated succesfully" });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .send({ auth: false, message: "Failed to authenticate token." });
+  }
+});
+
+//Check answers and return result
+router.post("/getresult", async (req, res) => {
+  const jwttoken = req.headers["x-access-token"];
+
+  if (!jwttoken)
+    return res
+      .status(401)
+      .send({ auth: false, message: "Authentication required." });
+
+  const TokenArray = jwttoken.split(" ");
+  const token = TokenArray[1];
+
+  try {
+    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+
+    const users = jwt.decode(token);
+
+    const topic = req.body.topic;
+
+    const _userAnswers = await pool.query(
+      'SELECT "user", answers FROM public.answers where "user" = $1;',
+      [users.user]
+    );
+
+    const _actualAnswers = await pool.query(
+      'SELECT  answer FROM public."Questions" where qtopic = $1 order by qno;',
+      [topic]
+    );
+
+    const actualAnswerArray = _actualAnswers.rows.map((item) =>
+      item.answer.toUpperCase()
+    );
+
+    const usersAnswerArray = _userAnswers.rows[0].answers;
+
+    let marks = 0;
+    const totalMarks = actualAnswerArray.length;
+
+    usersAnswerArray.forEach((element, index) => {
+      console.log(element);
+      if (element.trim() === actualAnswerArray[index].trim()) {
+        marks++;
+      }
+    });
+
+    console.log(marks);
+    res.status(200);
+    res.send({ marks: marks, user: users.user, totalMarks: totalMarks });
   } catch (err) {
     console.log(err);
     return res
