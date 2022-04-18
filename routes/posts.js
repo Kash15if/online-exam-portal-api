@@ -124,13 +124,11 @@ router.post("/getresult", async (req, res) => {
     const totalMarks = actualAnswerArray.length;
 
     usersAnswerArray.forEach((element, index) => {
-      console.log(element);
       if (element.trim() === actualAnswerArray[index].trim()) {
         marks++;
       }
     });
 
-    console.log(marks);
     res.status(200);
     res.send({ marks: marks, user: users.user, totalMarks: totalMarks });
   } catch (err) {

@@ -101,6 +101,36 @@ router.get("/timeleft", async (req, res) => {
   }
 });
 
+router.get("/getanswers", async (req, res) => {
+  const jwttoken = req.headers["x-access-token"];
+
+  if (!jwttoken)
+    return res
+      .status(401)
+      .send({ auth: false, message: "Authentication required." });
+
+  const TokenArray = jwttoken.split(" ");
+  const token = TokenArray[1];
+
+  try {
+    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+
+    const users = jwt.decode(token);
+
+    const out = await pool.query(
+      'select "answers" from public.answers where "user" = $1',
+      [users.user]
+    );
+
+    res.status(200);
+    res.send(out.rows[0].answers);
+  } catch {
+    return res
+      .status(500)
+      .send({ auth: false, message: "Failed to authenticate token." });
+  }
+});
+
 //testing jwt
 router.get("/abc", async (req, res) => {
   const jwttoken = req.headers["x-access-token"];
