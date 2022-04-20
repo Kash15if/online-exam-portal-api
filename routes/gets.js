@@ -88,12 +88,12 @@ router.get("/timeleft", async (req, res) => {
     const users = jwt.decode(token);
 
     const out = await pool.query(
-      'SELECT "user", timeleft FROM public.usertimeer where "user" = $1;',
+      'SELECT "user", timeleft FROM public.usertimer where "user" = $1;',
       [users.user]
     );
 
     res.status(200);
-    res.send(out.rows);
+    res.send(out.rows[0]);
   } catch {
     return res
       .status(500)

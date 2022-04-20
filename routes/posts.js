@@ -67,11 +67,11 @@ router.post("/updatetimer", async (req, res) => {
     const users = jwt.decode(token);
 
     const data = req.body;
-    const timeleft = data.timeleft;
+    const timeleft = parseInt(data.timeleft);
     const user = users.user;
 
     const out = await pool.query(
-      'update public.usertimeer  set timeleft = $1 where "user" = $2',
+      'update public.usertimer  set timeleft = $1 where "user" = $2',
       [timeleft, user]
     );
 
