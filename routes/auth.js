@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
 
       if (submittedPass === storedPass) {
         let user = foundUser.user;
-        var token = jwt.sign({ user }, "greenwaveauthapiforonlineexams");
+        var token = jwt.sign({ user }, process.env.AUTHTOKEN);
 
         res.status(200);
         res.send({

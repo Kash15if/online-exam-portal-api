@@ -20,7 +20,7 @@ router.get("/questions/:topic", async (req, res) => {
 
   const topic = req.params.topic;
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
@@ -50,7 +50,7 @@ router.get("/answers", async (req, res) => {
   const token = TokenArray[1];
 
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
@@ -83,7 +83,7 @@ router.get("/timeleft", async (req, res) => {
   const token = TokenArray[1];
 
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
@@ -113,7 +113,7 @@ router.get("/getanswers", async (req, res) => {
   const token = TokenArray[1];
 
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
@@ -144,7 +144,7 @@ router.get("/abc", async (req, res) => {
   const token = TokenArray[1];
 
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
@@ -169,7 +169,7 @@ router.get("/abc", async (req, res) => {
 //   const token = TokenArray[1];
 
 //   try {
-//     const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+//     const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
 //     const users = jwt.decode(token);
 

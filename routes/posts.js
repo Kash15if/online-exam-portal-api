@@ -17,7 +17,7 @@ router.post("/updateanswer", async (req, res) => {
   const token = TokenArray[1];
 
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
@@ -62,7 +62,7 @@ router.post("/updatetimer", async (req, res) => {
   const token = TokenArray[1];
 
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
@@ -98,7 +98,7 @@ router.post("/getresult", async (req, res) => {
   const token = TokenArray[1];
 
   try {
-    const verified = await jwt.verify(token, "greenwaveauthapiforonlineexams");
+    const verified = await jwt.verify(token, process.env.AUTHTOKEN);
 
     const users = jwt.decode(token);
 
